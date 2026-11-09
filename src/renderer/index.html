@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>.: Registro electoral (Valencia) :.</title>
+</head>
+<body class="bg-slate-500">
+  <!-- Layout principal con navbar-->
+  <div class="flex flex-col h-screen">
+      <!-- NavBar Responsive con javascript y Tailwind 4 -->
+      <section class="transition-all duration-300 w-full">
+          <header class="bg-slate-800 text-slate-100 shadow-sm border-b border-slate-400 shrink-0">
+              <div class="max-w-6xl mx-auto px-4 py-1">
+                  <div class="flex items-center justify-between">
+                      
+                      <!-- Logo -->
+                      <div class="shrink-0 flex items-center gap-3">
+                          <img src="/favicon.svg" alt="Logo" class="h-9 w-9">
+                          <p class="text-xl font-bold text-slate-100">Your Company</p>
+                      </div>
+
+                      <!-- Botón hamburguesa (solo móvil) -->
+                      <button 
+                          id="mobile-menu-btn"
+                          class="md:hidden p-2 text-slate-100 hover:text-slate-400 transition-colors"
+                          aria-label="Abrir menú"
+                      >
+                          <!-- Icono hamburguesa -->
+                          <svg id="hamburger-icon" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5h16M4 12h16M4 19h16"/>
+                          </svg>
+                      
+                          <!-- Icono X -->
+                          <svg id="close-icon" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/>
+                          </svg>
+                      </button>
+
+                      <!-- Menú Desktop -->
+                      <nav class="hidden md:flex gap-6">
+                          <a href="#" class="text-slate-100 hover:text-slate-400 transition-colors font-bold">Home</a>
+                          <a href="#" class="text-slate-100 hover:text-slate-400 transition-colors font-bold">Features</a>
+                          <a href="#" class="text-slate-100 hover:text-slate-400 transition-colors font-bold">Pricing</a>
+                          <a href="#" class="text-slate-100 hover:text-slate-400 transition-colors font-bold">Contact</a>
+                      </nav>
+
+                      <!-- Botones Desktop -->
+                      <div class="hidden md:flex gap-2">
+                          <a href="#" class="px-4 py-0.5 text-slate-100 hover:text-slate-400 border border-slate-100 rounded-lg hover:border-slate-400 transition-colors">Login</a>
+                          <a href="#" class="px-4 py-0.5 bg-blue-600 text-white rounded-lg hover:bg-blue-800 transition-colors">Sign Up</a>
+                      </div>
+                  </div>
+
+                  <!-- Menú Mobile (oculto por defecto) -->
+                  <div 
+                      id="mobile-menu" 
+                      class="hidden md:hidden bg-slate-100 border-t border-slate-400 rounded-2xl shadow-lg transition-all duration-200 ease-in-out my-2"
+                  >
+                      <nav class="px-4 py-2 space-y-2">
+                          <a href="#" class="block px-2 py-1 text-slate-500 hover:text-slate-800 hover:bg-slate-300 rounded-lg transition-colors">Home</a>
+                          <a href="#" class="block px-2 py-1 text-slate-500 hover:text-slate-800 hover:bg-slate-300 rounded-lg transition-colors">Features</a>
+                          <a href="#" class="block px-2 py-1 text-slate-500 hover:text-slate-800 hover:bg-slate-300 rounded-lg transition-colors">Pricing</a>
+                          <a href="#" class="block px-2 py-1 text-slate-500 hover:text-slate-800 hover:bg-slate-300 rounded-lg transition-colors">Contact</a>
+                          
+                          <!-- Botones Mobile -->
+                          <div class="flex gap-3 items-center py-2 border-t border-slate-400">
+                              <a href="#" class="
+                                  inline-flex h-9 flex-1 items-center justify-center
+                                  rounded-lg border border-slate-400 px-3
+                                  text-sm font-medium text-slate-400
+                                  transition-colors hover:border-slate-800
+                                  hover:text-slate-800"
+                              >
+                                      Login
+                              </a>
+                              <a href="#" class="
+                                  inline-flex h-9 flex-1 items-center justify-center
+                                  rounded-lg border border-transparent bg-blue-600 px-3
+                                  text-sm font-medium text-white
+                                  transition-colors hover:bg-blue-800"
+                              >
+                                  Sign Up
+                              </a>
+                          </div>
+                      </nav>
+                  </div>
+              </div>
+          </header>
+      </section>        
+
+      <main class="bg-slate-300 flex-1 overflow-y-auto p-5">
+          <div class="min-h-screen bg-white p-4 rounded-2xl shadow-2xl shadow-slate-800">
+              
+              <!-- Tabla de electores con búsqueda y paginación -->
+              <div class="relative shadow-md">
+                  <div class="flex flex-col gap-3 items-center bg-white px-4 py-2 sm:flex-row sm:items-center sm:justify-between">
+                      <h1 class="text-xl font-semibold text-slate-800">
+                          Electores
+                      </h1>
+
+                      <label class="relative block w-full sm:max-w-xs">
+                          <span class="sr-only">Buscar electores</span>
+                          <svg
+                              class="pointer-events-none absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-slate-400"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                          >
+                              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+                              <path d="m16 16 4 4" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
+                          </svg>
+                          <input
+                              id="elector-search"
+                              type="search"
+                              placeholder="Buscar por cédula o nombre..."
+                              autocomplete="off"
+                              class="h-10 w-full rounded-lg border border-slate-300 bg-white py-2 pr-3 pl-10 text-sm text-slate-700 shadow-xs placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          >
+                      </label>
+                  </div>
+
+                  <div
+                      class="max-h-130 overflow-auto"
+                      tabindex="0"
+                      role="region"
+                      aria-label="Listado de electores"
+                  >
+                      <table class="w-full min-w-175 table-fixed border-separate border-spacing-0 text-left">
+                          <!-- Encabezado visible durante el scroll -->
+                          <thead class="sticky top-0 z-10 bg-slate-600 bg-linear-to-b from-slate-500 to-slate-600">
+                              <tr>
+                                  <th scope="col" class="px-4 py-2 text-center font-bold text-slate-200 uppercase">
+                                      ID
+                                  </th>
+
+                                  <th scope="col" class="px-4 py-2 text-center font-bold text-slate-200 uppercase">
+                                      Cédula
+                                  </th>
+
+                                  <th scope="col" class="px-4 py-2 text-center font-bold text-slate-200 uppercase">
+                                      Apellidos y nombres
+                                  </th>
+
+                                  <th scope="col" class="w-16 px-2 py-2 text-center font-bold text-slate-200 uppercase">
+                                      
+                                  </th>
+
+                              </tr>
+                          </thead>
+
+                          <tbody id="electores-table-body" class="hidden bg-white text-gray-500">
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Tu dropdown actual -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      YY-853581
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      Notebook Basic
+                                  </td>
+
+                                  <td class="border border-gray-300 px-4 py-1 text-center">
+                                      $ 299
+                                  </td>
+
+                                  <td class="relative w-14 border border-gray-300 px-2 py-1 text-center">
+                                      <!-- Menú dropdown -->
+                                      <div class="relative inline-block dropdown">
+                                          <button type="button" class="dropdown-btn inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white active:scale-105 transition-transform">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="transition-transform">
+                                                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                              </svg>
+                                          </button>
+
+                                          <ul class="dropdown-menu absolute right-0 top-full mt-2 w-32 sm:w-36 bg-white rounded-2xl p-1 opacity-0 pointer-events-none transition-all duration-200 z-50 shadow-lg">
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 1</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 2</button></li>
+                                              <li><button type="button" class="dropdown-item open-modal w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 3</button></li>
+                                              <li><button type="button" class="dropdown-item w-full text-left hover:bg-zinc-200/80 cursor-pointer px-3 py-2 rounded-xl text-sm">Opción 4</button></li>
+                                          </ul>
+                                      </div>                         
+                                  </td>
+                              </tr>
+
+                              <tr id="no-product-results" class="hidden">
+                                  <td colspan="4" class="border border-gray-300 px-4 py-6 text-center text-slate-500">
+                                      No se encontraron electores.
+                                  </td>
+                              </tr>
+                          </tbody>
+
+                          <!-- Footer visible durante el scroll -->
+                          <tfoot>
+                              <tr>
+                                  <td
+                                      colspan="4"
+                                      class="sticky bottom-0 z-20 border-t border-slate-400
+                                          bg-slate-600 bg-linear-to-b
+                                          from-slate-500 to-slate-600
+                                          px-4 py-3 text-slate-200"
+                                  >
+                                      <div class="flex flex-col items-center gap-3 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-between">
+
+                                          <!-- Widget de paginación -->
+                                          <div class="inline-flex h-9 shrink-0 items-stretch -space-x-px rounded-lg shadow-xs">
+                                              <!-- Página anterior -->
+                                              <div class="group relative flex">
+                                                  <button
+                                                      id="previous-page"
+                                                      type="button"
+                                                      aria-label="Página anterior"
+                                                      aria-describedby="tooltip-previous"
+                                                      class="relative inline-flex h-9 w-9 items-center justify-center
+                                                              rounded-s-lg border border-slate-300 bg-white text-slate-600
+                                                              transition-colors enabled:cursor-pointer
+                                                              enabled:hover:bg-slate-100 enabled:hover:text-slate-900
+                                                              focus-visible:z-10 focus-visible:outline-none
+                                                              focus-visible:ring-2 focus-visible:ring-blue-500
+                                                              disabled:cursor-not-allowed disabled:opacity-40"
+                                                      >
+                                                      <svg
+                                                      class="h-4 w-4"
+                                                      aria-hidden="true"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                      >
+                                                          <path
+                                                              stroke="currentColor"
+                                                              stroke-linecap="round"
+                                                              stroke-linejoin="round"
+                                                              stroke-width="2"
+                                                              d="m15 19-7-7 7-7"
+                                                          />
+                                                      </svg>
+                                                  </button>
+
+                                                  <div
+                                                      id="tooltip-previous"
+                                                      role="tooltip"
+                                                      class="pointer-events-none invisible absolute bottom-full left-1/2
+                                                              z-20 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md
+                                                              bg-slate-900 px-3 py-2 text-xs font-medium text-white
+                                                              opacity-0 shadow-sm transition-opacity
+                                                              group-hover:visible group-hover:opacity-100
+                                                              group-focus-within:visible group-focus-within:opacity-100"
+                                                      >
+                                                          Anterior
+                                                      <span
+                                                      class="absolute top-full left-1/2 -translate-x-1/2
+                                                              border-4 border-transparent border-t-slate-900"
+                                                      ></span>
+                                                  </div>
+                                              </div>
+
+                                              <!-- Indicador de página -->
+                                              <span
+                                                  id="page-indicator"
+                                                  role="status"
+                                                  aria-live="polite"
+                                                  aria-atomic="true"
+                                                  class="inline-flex h-9 min-w-24 items-center justify-center
+                                                      border border-slate-300 bg-white px-3 text-sm
+                                                      font-medium text-slate-700 tabular-nums"
+                                              >
+                                                  0 de 0
+                                              </span>
+
+                                              <!-- Página siguiente -->
+                                              <div class="group relative flex">
+                                                  <button
+                                                      id="next-page"
+                                                      type="button"
+                                                      aria-label="Página siguiente"
+                                                      aria-describedby="tooltip-next"
+                                                      class="relative inline-flex h-9 w-9 items-center justify-center
+                                                          rounded-e-lg border border-slate-300 bg-white text-slate-600
+                                                          transition-colors enabled:cursor-pointer
+                                                          enabled:hover:bg-slate-100 enabled:hover:text-slate-900
+                                                          focus-visible:z-10 focus-visible:outline-none
+                                                          focus-visible:ring-2 focus-visible:ring-blue-500
+                                                          disabled:cursor-not-allowed disabled:opacity-40"
+                                                      >
+                                                      <svg
+                                                          class="h-4 w-4"
+                                                          aria-hidden="true"
+                                                          xmlns="http://www.w3.org/2000/svg"
+                                                          fill="none"
+                                                          viewBox="0 0 24 24"
+                                                          >
+                                                          <path
+                                                              stroke="currentColor"
+                                                              stroke-linecap="round"
+                                                              stroke-linejoin="round"
+                                                              stroke-width="2"
+                                                              d="m9 5 7 7-7 7"
+                                                          />
+                                                      </svg>
+                                                  </button>
+
+                                                  <div
+                                                      id="tooltip-next"
+                                                      role="tooltip"
+                                                      class="pointer-events-none invisible absolute bottom-full left-1/2
+                                                          z-20 mb-2 -translate-x-1/2 whitespace-nowrap rounded-md
+                                                          bg-slate-900 px-3 py-2 text-xs font-medium text-white
+                                                          opacity-0 shadow-sm transition-opacity
+                                                          group-hover:visible group-hover:opacity-100
+                                                          group-focus-within:visible group-focus-within:opacity-100"
+                                                      >
+                                                      Siguiente
+                                                      <span
+                                                          class="absolute top-full left-1/2 -translate-x-1/2
+                                                              border-4 border-transparent border-t-slate-900"
+                                                      ></span>
+                                                  </div>
+                                              </div>
+                                          </div>                                
+
+                                          <!-- Widget de cantidad de registros por página -->
+                                          <form class="m-0 w-40 shrink-0">
+                                              <label for="page-size" class="sr-only">
+                                                  Registros por página
+                                              </label>
+
+                                              <div class="relative">
+                                                  <select
+                                                      id="page-size"
+                                                      name="page-size"
+                                                      class="block h-9 w-full cursor-pointer appearance-none
+                                                              rounded-lg border border-slate-300 bg-white
+                                                              py-2 pr-9 pl-3 text-sm text-slate-700 shadow-xs
+                                                              transition-colors hover:bg-slate-50
+                                                              focus:border-blue-500 focus:outline-none
+                                                              focus:ring-2 focus:ring-blue-500"
+                                                  >
+                                                      <option value="10" selected>10 por página</option>
+                                                      <option value="25">25 por página</option>
+                                                      <option value="50">50 por página</option>
+                                                      <option value="100">100 por página</option>
+                                                  </select>
+
+                                                  <svg
+                                                      class="pointer-events-none absolute top-1/2 right-3
+                                                              h-4 w-4 -translate-y-1/2 text-slate-500"
+                                                      aria-hidden="true"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                  >
+                                                      <path
+                                                          stroke="currentColor"
+                                                          stroke-linecap="round"
+                                                          stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="m6 9 6 6 6-6"
+                                                      />
+                                                  </svg>
+                                              </div>
+                                          </form>                                
+
+                                          <!-- Widget de ir a número de página -->
+                                          <form id="go-to-page-form" class="m-0 flex h-9 shrink-0 items-center gap-3 whitespace-nowrap">
+                                              <div class="flex items-center gap-2">
+                                                  <label
+                                                      for="go-to-page"
+                                                      class="shrink-0 text-sm font-medium text-slate-200"
+                                                  >
+                                                      Ir a
+                                                  </label>
+
+                                                  <input
+                                                      type="text"
+                                                      id="go-to-page"
+                                                      name="page"
+                                                      inputmode="numeric"
+                                                      pattern="[1-9][0-9]*"
+                                                      required
+                                                      autocomplete="off"
+                                                      placeholder="99"
+                                                      title="Introduce un número de página mayor que cero"
+                                                      class="block h-9 w-16 rounded-lg border border-slate-300
+                                                              bg-white px-2 text-center text-sm text-slate-700
+                                                              shadow-xs transition-colors
+                                                              placeholder:text-slate-400 hover:border-slate-400
+                                                              focus:border-blue-500 focus:outline-hidden
+                                                              focus:ring-2 focus:ring-blue-500"
+                                                  >
+
+                                                  <span class="text-sm font-medium text-slate-200">
+                                                      página
+                                                  </span>
+                                              </div>
+
+                                              <button
+                                                  type="submit"
+                                                  class="inline-flex h-9 cursor-pointer items-center justify-center
+                                                      rounded-lg border border-transparent bg-blue-600
+                                                      px-3 text-sm font-medium text-white shadow-xs
+                                                      transition-colors hover:bg-blue-700 active:bg-blue-800
+                                                      focus-visible:outline-hidden focus-visible:ring-2
+                                                      focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                              >
+                                                  Ir
+                                              </button>
+                                          </form>                                
+
+                                          <span id="elector-count" role="status" aria-live="polite" class="inline-flex h-9 shrink-0 items-center whitespace-nowrap text-[16px] font-semibold">
+                                              Total de registros: 0
+                                          </span>
+                                      </div>
+                                  </td>
+                              </tr>
+                          </tfoot>
+                      </table>
+                  </div>
+              </div>
+
+              <!-- Dialog Modal -->
+              <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-100 p-4">
+                  <div class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl">
+                      <!-- Header del modal -->
+                      <header class="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+                          <h2 id="modal-title" class="text-lg font-semibold text-gray-800">Información del elector</h2>
+                          <button id="closeModal" type="button" aria-label="Cerrar" class="rounded-lg px-3 py-1 text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+                              ✕
+                          </button>
+                      </header>
+                      <!-- Cuerpo del modal -->
+                      <form class="grid grid-cols-1 gap-4 px-5 py-5 sm:grid-cols-2">
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              ID
+                              <input id="modal-elector-id" type="text" readonly class="h-10 rounded-lg border border-gray-300 bg-gray-50 px-3 text-gray-700">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              Nacionalidad
+                              <input id="modal-elector-nacionalidad" type="text" readonly class="h-10 rounded-lg border border-gray-300 bg-gray-50 px-3 text-gray-700">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              Cédula
+                              <input id="modal-elector-cedula" type="text" readonly class="h-10 rounded-lg border border-gray-300 bg-gray-50 px-3 text-gray-700">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              Apellidos y nombres
+                              <input id="modal-elector-nombres" type="text" readonly class="h-10 rounded-lg border border-gray-300 bg-gray-50 px-3 text-gray-700">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              Centro
+                              <input id="modal-elector-centro" type="text" readonly class="h-10 rounded-lg border border-gray-300 bg-gray-50 px-3 text-gray-700">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              Fecha de nacimiento
+                              <input id="modal-elector-fecha-nacimiento" type="text" readonly class="h-10 rounded-lg border border-gray-300 bg-gray-50 px-3 text-gray-700">
+                          </label>
+                      </form>
+                      <!-- Footer del modal -->
+                      <footer class="flex items-center justify-end border-t border-gray-200 px-5 py-4">
+                          <button id="closeModalBtn" type="button" class="bg-slate-600 rounded-lg px-3 py-1 text-neutral-100 hover:bg-slate-500">
+                              Cerrar
+                          </button>
+                      </footer>
+                  </div>
+              </div>                
+
+          </div>
+      </main>
+
+      <footer class="bg-slate-800 text-slate-100 p-2 shrink-0 flex justify-between items-center">
+          <h3>Pie de página</h3>
+      </footer>
+  </div>
+
+  <script type="module" src="src/renderer.js"></script>
+</body>
+</html>
