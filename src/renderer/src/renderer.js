@@ -112,6 +112,59 @@ const loadElectores = async () => {
 const main = () => {
   handleNavBar()
 
+  const createModal = document.getElementById('nuevo-elector-modal')
+  const createForm = document.getElementById('nuevo-elector-form')
+  const createMessage = document.getElementById('nuevo-elector-message')
+  const createSubmitButton = document.getElementById('submit-nuevo-elector')
+  const showCreateModal = () => {
+    createForm.reset()
+    createMessage.textContent = ''
+    createMessage.classList.add('hidden')
+    createMessage.classList.remove('text-red-600', 'text-green-600')
+    createModal.classList.remove('hidden')
+    createModal.classList.add('flex')
+    createForm.elements.nacionalidad.focus()
+  }
+  const closeCreateModal = () => {
+    createModal.classList.add('hidden')
+    createModal.classList.remove('flex')
+  }
+
+  document.getElementById('nuevo-elector-desktop').addEventListener('click', showCreateModal)
+  document.getElementById('nuevo-elector-mobile-btn').addEventListener('click', showCreateModal)
+  document.getElementById('close-nuevo-elector').addEventListener('click', closeCreateModal)
+  document.getElementById('cancel-nuevo-elector').addEventListener('click', closeCreateModal)
+  createModal.addEventListener('click', (event) => {
+    if (event.target === createModal) closeCreateModal()
+  })
+
+  createForm.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    const formData = new FormData(createForm)
+    const elector = Object.fromEntries(formData.entries())
+    createSubmitButton.disabled = true
+    createMessage.classList.add('hidden')
+
+    try {
+      const result = await window.electoresAPI.crear(elector)
+      state.search = ''
+      state.page = Math.max(1, Math.ceil(result.total / state.pageSize))
+      document.getElementById('elector-search').value = ''
+      await loadElectores()
+      createForm.reset()
+      createMessage.textContent = `Elector guardado correctamente (ID: ${result.id}).`
+      createMessage.classList.remove('hidden', 'text-red-600')
+      createMessage.classList.add('text-green-600')
+    } catch (error) {
+      console.error('No se pudo guardar el elector:', error)
+      createMessage.textContent = `No se pudo guardar el elector: ${error.message}`
+      createMessage.classList.remove('hidden', 'text-green-600')
+      createMessage.classList.add('text-red-600')
+    } finally {
+      createSubmitButton.disabled = false
+    }
+  })
+
   const modal = document.getElementById('modal')
   const closeModal = () => {
     modal.classList.add('hidden')
@@ -147,6 +200,7 @@ const main = () => {
   })
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !modal.classList.contains('hidden')) closeModal()
+    if (event.key === 'Escape' && !createModal.classList.contains('hidden')) closeCreateModal()
   })
 
   document.getElementById('previous-page').addEventListener('click', () => {

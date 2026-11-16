@@ -47,8 +47,7 @@
 
                       <!-- Botones Desktop -->
                       <div class="hidden md:flex gap-2">
-                          <a href="#" class="px-4 py-0.5 text-slate-100 hover:text-slate-400 border border-slate-100 rounded-lg hover:border-slate-400 transition-colors">Login</a>
-                          <a href="#" class="px-4 py-0.5 bg-blue-600 text-white rounded-lg hover:bg-blue-800 transition-colors">Sign Up</a>
+                          <button id="nuevo-elector-desktop" type="button" class="px-4 py-0.5 bg-blue-600 text-white rounded-lg transition-colors hover:bg-blue-800">Nuevo Elector</button>
                       </div>
                   </div>
 
@@ -65,23 +64,14 @@
                           
                           <!-- Botones Mobile -->
                           <div class="flex gap-3 items-center py-2 border-t border-slate-400">
-                              <a href="#" class="
-                                  inline-flex h-9 flex-1 items-center justify-center
-                                  rounded-lg border border-slate-400 px-3
-                                  text-sm font-medium text-slate-400
-                                  transition-colors hover:border-slate-800
-                                  hover:text-slate-800"
-                              >
-                                      Login
-                              </a>
-                              <a href="#" class="
+                              <button id="nuevo-elector-mobile-btn" type="button" class="
                                   inline-flex h-9 flex-1 items-center justify-center
                                   rounded-lg border border-transparent bg-blue-600 px-3
                                   text-sm font-medium text-white
                                   transition-colors hover:bg-blue-800"
                               >
-                                  Sign Up
-                              </a>
+                                  Nuevo Elector
+                              </button>
                           </div>
                       </nav>
                   </div>
@@ -750,6 +740,44 @@
                       </footer>
                   </div>
               </div>                
+
+              <div id="nuevo-elector-modal" role="dialog" aria-modal="true" aria-labelledby="nuevo-elector-title" class="fixed inset-0 z-100 hidden items-center justify-center bg-black/50 p-4">
+                  <div class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl">
+                      <header class="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+                          <h2 id="nuevo-elector-title" class="text-lg font-semibold text-gray-800">Registrar nuevo elector</h2>
+                          <button id="close-nuevo-elector" type="button" aria-label="Cerrar" class="rounded-lg px-3 py-1 text-gray-500 hover:bg-gray-100 hover:text-gray-800">
+                              ✕
+                          </button>
+                      </header>
+                      <form id="nuevo-elector-form" class="grid grid-cols-1 gap-4 px-5 py-5 sm:grid-cols-2">
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              Nacionalidad
+                              <input name="nacionalidad" type="text" maxlength="1" pattern="[A-Za-z]" required autocomplete="off" class="h-10 rounded-lg border border-gray-300 px-3 uppercase text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              Cédula
+                              <input name="cedula" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="15" required autocomplete="off" class="h-10 rounded-lg border border-gray-300 px-3 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700 sm:col-span-2">
+                              Apellidos y nombres
+                              <input name="apellidos_nombres" type="text" maxlength="200" required autocomplete="off" class="h-10 rounded-lg border border-gray-300 px-3 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700 sm:col-span-2">
+                              Centro
+                              <input name="centro" type="text" maxlength="200" required autocomplete="off" class="h-10 rounded-lg border border-gray-300 px-3 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          </label>
+                          <label class="flex flex-col gap-1 text-sm font-medium text-gray-700">
+                              Fecha de nacimiento
+                              <input name="fecha_nacimiento" type="date" required class="h-10 rounded-lg border border-gray-300 px-3 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                          </label>
+                          <p id="nuevo-elector-message" role="status" aria-live="polite" class="hidden self-center text-sm sm:col-span-2"></p>
+                          <footer class="flex justify-end gap-3 border-t border-gray-200 pt-4 sm:col-span-2">
+                              <button id="cancel-nuevo-elector" type="button" class="rounded-lg bg-slate-200 px-4 py-2 text-slate-700 hover:bg-slate-300">Cancelar</button>
+                              <button id="submit-nuevo-elector" type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50">Guardar elector</button>
+                          </footer>
+                      </form>
+                  </div>
+              </div>
 
           </div>
       </main>

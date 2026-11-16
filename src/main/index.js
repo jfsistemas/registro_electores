@@ -60,6 +60,65 @@ const listElectores = (_event, options) => {
   return { rows, total }
 }
 
+const createElector = (_event, elector) => {
+  if (!elector || typeof elector !== 'object' || Array.isArray(elector)) {
+    throw new TypeError('Los datos del elector no son válidos.')
+  }
+
+  const readText = (value, field) => {
+    if (typeof value !== 'string') {
+      throw new TypeError(`${field} debe ser texto.`)
+    }
+    return value.trim()
+  }
+
+  const nacionalidad = readText(elector.nacionalidad, 'La nacionalidad').toUpperCase()
+  const cedula = readText(elector.cedula, 'La cédula')
+  const apellidosNombres = readText(elector.apellidos_nombres, 'Los apellidos y nombres')
+  const centro = readText(elector.centro, 'El centro')
+  const fechaNacimiento = readText(elector.fecha_nacimiento, 'La fecha de nacimiento')
+
+  if (typeof nacionalidad !== 'string' || !/^[A-Z]$/.test(nacionalidad)) {
+    throw new TypeError('La nacionalidad debe ser una letra.')
+  }
+  if (typeof cedula !== 'string' || !/^\d{1,15}$/.test(cedula)) {
+    throw new TypeError('La cédula debe contener solo números.')
+  }
+  if (!Number.isSafeInteger(Number(cedula)) || Number(cedula) < 1) {
+    throw new TypeError('La cédula está fuera del rango permitido.')
+  }
+  if (typeof apellidosNombres !== 'string' || !apellidosNombres || apellidosNombres.length > 200) {
+    throw new TypeError('Los apellidos y nombres son obligatorios (máximo 200 caracteres).')
+  }
+  if (typeof centro !== 'string' || !centro || centro.length > 200) {
+    throw new TypeError('El centro es obligatorio (máximo 200 caracteres).')
+  }
+
+  const dateMatch = fechaNacimiento.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+  if (!dateMatch) {
+    throw new TypeError('La fecha de nacimiento no es válida.')
+  }
+  const [, year, month, day] = dateMatch
+  const parsedDate = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)))
+  if (
+    parsedDate.getUTCFullYear() !== Number(year) ||
+    parsedDate.getUTCMonth() !== Number(month) - 1 ||
+    parsedDate.getUTCDate() !== Number(day)
+  ) {
+    throw new TypeError('La fecha de nacimiento no es válida.')
+  }
+
+  const result = db.prepare(`
+      INSERT INTO electores
+        (nacionalidad, cedula, apellidos_nombres, centro, fecha_nacimiento)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(nacionalidad, Number(cedula), apellidosNombres, centro, `${day}/${month}/${year}`)
+
+  const total = db.prepare('SELECT COUNT(*) AS total FROM electores').get().total
+
+  return { id: result.lastInsertRowid, total }
+}
+
 const listaElectores = () => {
   const lista = db.prepare(
     `SELECT id, cedula, apellidos_nombres, fecha_nacimiento
@@ -92,7 +151,7 @@ const createWindow = () => {
     webPreferences: {
       preload: join(__dirname, '..', 'preload', 'index.js'),
       nodeIntegration: false,
-      contextIsolation: true,
+      contextIsolation: true
     }
   })
 
@@ -116,5 +175,6 @@ app.whenReady().then(() => {
   //obtenerElector()
   createDataBase()
   ipcMain.handle('electores:listar', listElectores)
+  ipcMain.handle('electores:crear', createElector)
   createWindow()
 })
